@@ -40,8 +40,9 @@ namespace CustomPadWeb.Infrastructure
             {
                 b.HasKey(o => o.Id);
                 b.Property(o => o.Status).IsRequired();
-                b.HasMany(typeof(CustomizationOption))
-                    .WithOne()
+                b.HasMany(o => o.Options)
+                    .WithOne(o => o.Order)
+                    .HasForeignKey(o => o.OrderId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
         }
