@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CustomPadWeb.Infrastructure.Repositories;
+using CustomPadWeb.Domain.Repositories;
 
 namespace CustomPadWeb.Infrastructure
 {

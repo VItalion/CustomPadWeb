@@ -1,6 +1,6 @@
 ﻿using CustomPadWeb.Domain.DomainEvents;
 
-namespace CustomPadWeb.Infrastructure
+namespace CustomPadWeb.Domain.Interfaces
 {
     public interface IDomainEventHandler<in TEvent> where TEvent : IDomainEvent
     {

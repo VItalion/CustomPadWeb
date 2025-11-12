@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CustomPadWeb.Infrastructure
+namespace CustomPadWeb.Domain.Interfaces
 {
     public interface IDomainEventDispatcher
     {

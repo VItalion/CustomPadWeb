@@ -1,4 +1,5 @@
 ﻿using CustomPadWeb.Domain.DomainEvents;
+using CustomPadWeb.Domain.Interfaces;
 
 namespace CustomPadWeb.Infrastructure
 {

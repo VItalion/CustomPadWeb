@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace CustomPadWeb.Infrastructure.Repositories
+namespace CustomPadWeb.Domain.Repositories
 {
     public interface IRepository<T> where T : class
     {

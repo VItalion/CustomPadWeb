@@ -1,5 +1,6 @@
 ﻿using CustomPadWeb.Domain.Abstractions;
 using CustomPadWeb.Domain.DomainEvents;
+using CustomPadWeb.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
