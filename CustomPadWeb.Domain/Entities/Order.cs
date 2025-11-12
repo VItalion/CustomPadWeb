@@ -1,4 +1,5 @@
 ﻿using CustomPadWeb.Domain.Abstractions;
+using CustomPadWeb.Domain.DomainEvents;
 
 namespace CustomPadWeb.Domain.Entities
 {
@@ -23,6 +24,7 @@ namespace CustomPadWeb.Domain.Entities
         public Order(Guid userId)
         {
             UserId = userId;
+            AddDomainEvent(new OrderCreatedEvent(Id));
         }
 
 

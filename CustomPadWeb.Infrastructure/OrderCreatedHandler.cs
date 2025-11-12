@@ -1,17 +1,21 @@
 ﻿using CustomPadWeb.Domain.DomainEvents;
-using CustomPadWeb.Domain.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace CustomPadWeb.Infrastructure
 {
-    public class OrderCreatedHandler : IDomainEventHandler<OrderCreated>
+    public class OrderCreatedHandler : IDomainEventHandler<OrderCreatedEvent>
     {
-        private readonly IEventBus _bus;
-        public OrderCreatedHandler(IEventBus bus) => _bus = bus;
+        private readonly ILogger<OrderCreatedHandler> _logger;
 
-        public async Task HandleAsync(OrderCreated domainEvent)
+        public OrderCreatedHandler(ILogger<OrderCreatedHandler> logger)
         {
-            var integrationEvent = new OrderSubmittedIntegrationEvent(domainEvent.OrderId, domainEvent.UserId, domainEvent.OccurredOn);
-            await _bus.PublishAsync(integrationEvent);
+            _logger = logger;
+        }
+
+        public Task HandleAsync(OrderCreatedEvent domainEvent, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Handled OrderCreatedEvent for Order {OrderId}", domainEvent.OrderId);
+            return Task.CompletedTask;
         }
     }
 }

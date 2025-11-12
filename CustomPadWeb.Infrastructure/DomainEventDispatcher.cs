@@ -1,45 +1,32 @@
-﻿using CustomPadWeb.Domain.Abstractions;
-using CustomPadWeb.Domain.DomainEvents;
-using CustomPadWeb.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using CustomPadWeb.Domain.DomainEvents;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace CustomPadWeb.Infrastructure
 {
     public class DomainEventDispatcher : IDomainEventDispatcher
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<DomainEventDispatcher> _logger;
 
-        public DomainEventDispatcher(IServiceProvider serviceProvider)
+        public DomainEventDispatcher(IServiceProvider serviceProvider, ILogger<DomainEventDispatcher> logger)
         {
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
-        public async Task DispatchDomainEventsAsync(DbContext context)
+        public async Task DispatchAsync(IDomainEvent domainEvent, CancellationToken cancellationToken = default)
         {
-            var entities = context.ChangeTracker.Entries<Entity>()
-                .Select(e => e.Entity)
-                .Where(e => e.DomainEvents.Any())
-                .ToArray();
+            var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(domainEvent.GetType());
+            var handlers = _serviceProvider.GetServices(handlerType);
 
-            var events = entities.SelectMany(e => e.DomainEvents).ToList();
-
-            foreach (var @event in events)
+            foreach (var handler in handlers)
             {
-                var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(@event.GetType());
-                var handlers = _serviceProvider.GetServices(handlerType);
-
-                foreach (var handler in handlers)
-                {
-                    await (Task)handlerType
-                        .GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync))!
-                        .Invoke(handler, new[] { @event })!;
-                }
+                _logger.LogInformation("Dispatching domain event: {EventType}", domainEvent.GetType().Name);
+                await (Task)handlerType
+                    .GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync))!
+                    .Invoke(handler, new object[] { domainEvent, cancellationToken })!;
             }
-
-            foreach (var entity in entities)
-                entity.ClearDomainEvents();
         }
     }
-
 }

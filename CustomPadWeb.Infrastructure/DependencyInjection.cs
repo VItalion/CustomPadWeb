@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CustomPadWeb.Domain.DomainEvents;
+using CustomPadWeb.Domain.Repositories;
+using CustomPadWeb.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CustomPadWeb.Infrastructure.Repositories;
-using CustomPadWeb.Domain.Repositories;
 
 namespace CustomPadWeb.Infrastructure
 {
@@ -20,6 +21,12 @@ namespace CustomPadWeb.Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+            services.Scan(scan => scan
+                .FromAssemblyOf<DomainEventDispatcher>()
+                .AddClasses(classes => classes.AssignableTo(typeof(IDomainEventHandler<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
 
             return services;
         }
