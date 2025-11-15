@@ -4,15 +4,22 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>b7a7608d-c5dd-4831-af42-537222ee8eeb</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CustomPadWeb.Common\CustomPadWeb.Common.csproj" />
+    <ProjectReference Include="..\CustomPadWeb.Domain\CustomPadWeb.Domain.csproj" />
+    <ProjectReference Include="..\CustomPadWeb.Infrastructure\CustomPadWeb.Infrastructure.csproj" />
     <ProjectReference Include="..\CustomPadWeb.ServiceDefaults\CustomPadWeb.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

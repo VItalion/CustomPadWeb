@@ -3,13 +3,18 @@ using CustomPadWeb.Domain.Configurations;
 using CustomPadWeb.Domain.DomainEvents;
 using CustomPadWeb.Domain.Entities;
 using CustomPadWeb.Domain.ValueObjects;
+using CustomPadWeb.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CustomPadWeb.Infrastructure
 {
     public class AppDbContext : DbContext
     {
+        private readonly IConfiguration _config;
         private readonly IDomainEventDispatcher _dispatcher;
+
+        public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
         public DbSet<Suggestion> Suggestions { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
@@ -17,9 +22,18 @@ namespace CustomPadWeb.Infrastructure
         public DbSet<CustomizationOption> CustomizationOptions { get; set; } = null!;
 
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, IDomainEventDispatcher dispatcher) : base(options) 
+        public AppDbContext(DbContextOptions<AppDbContext> options, IDomainEventDispatcher dispatcher, IConfiguration configuration) : base(options)
         {
             _dispatcher = dispatcher;
+            _config = configuration;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var conn = _config["Postgres:ConnectionString"]
+            ?? throw new InvalidOperationException("Missing connection string");
+
+            optionsBuilder.UseNpgsql(conn);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,6 +64,14 @@ namespace CustomPadWeb.Infrastructure
                     .WithOne(o => o.Order)
                     .HasForeignKey(o => o.OrderId)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Storing messages in db and remove it after processing
+            modelBuilder.Entity<OutboxMessage>(builder =>
+            {
+                builder.HasKey(x => x.Id);
+                builder.Property(x => x.Type).IsRequired();
+                builder.Property(x => x.Content).IsRequired();
             });
         }
 
