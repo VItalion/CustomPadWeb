@@ -9,4 +9,6 @@ builder.AddProject<Projects.CustomPadWeb_Web>("webfrontend")
     .WithReference(apiService)
     .WaitFor(apiService);
 
+builder.AddProject<Projects.CustomPadWeb_AuthService>("custompadweb-authservice");
+
 builder.Build().Run();

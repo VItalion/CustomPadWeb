@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CustomPadWeb.Infrastructure
 {
-    public class OrderCreatedHandler : IDomainEventHandler<OrderCreatedEvent>
+    public class OrderCreatedHandler : IDomainEventHandler<OrderCreatedDomainEvent>
     {
         private readonly ILogger<OrderCreatedHandler> _logger;
 
@@ -12,7 +12,7 @@ namespace CustomPadWeb.Infrastructure
             _logger = logger;
         }
 
-        public Task HandleAsync(OrderCreatedEvent domainEvent, CancellationToken cancellationToken)
+        public Task HandleAsync(OrderCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handled OrderCreatedEvent for Order {OrderId}", domainEvent.OrderId);
             return Task.CompletedTask;

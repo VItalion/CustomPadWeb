@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CustomPadWeb.ApiService\CustomPadWeb.ApiService.csproj" />
+    <ProjectReference Include="..\CustomPadWeb.AuthService\CustomPadWeb.AuthService.csproj" />
     <ProjectReference Include="..\CustomPadWeb.Web\CustomPadWeb.Web.csproj" />
   </ItemGroup>
 

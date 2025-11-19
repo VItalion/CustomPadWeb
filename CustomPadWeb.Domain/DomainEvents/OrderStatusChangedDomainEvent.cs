@@ -2,7 +2,7 @@
 
 namespace CustomPadWeb.Domain.DomainEvents
 {
-    public record OrderStatusChanged(Guid OrderId, OrderStatus NewStatus) : IDomainEvent
+    public record OrderStatusChangedDomainEvent(Guid OrderId, OrderStatus NewStatus) : IDomainEvent
     {
         public Guid OrderId { get; } = OrderId;
 
