@@ -1,12 +1,16 @@
 ﻿using CustomPadWeb.AuthService.Data;
 using CustomPadWeb.AuthService.Domain;
+using CustomPadWeb.AuthService.Exceptions;
 using CustomPadWeb.AuthService.IntegrationEvents;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Authentication;
 
 namespace CustomPadWeb.AuthService.Services
 {
     public class AuthService : IAuthService
     {
+        private const string UserRoleName = "User";
+
         private readonly AuthDbContext _db;
         private readonly IPasswordHasher _hasher;
         private readonly IJwtService _jwt;
@@ -27,12 +31,14 @@ namespace CustomPadWeb.AuthService.Services
         public async Task<User> RegisterAsync(string email, string password)
         {
             if (await _db.Users.AnyAsync(x => x.Email == email))
-                throw new Exception("User already exists.");
+                throw new AlredyExistsException("User already exists.");
 
+            var userRole = await _db.Roles.FirstAsync(r => r.Name == UserRoleName).ConfigureAwait(false);
             var user = new User
             {
                 Email = email,
-                PasswordHash = _hasher.Hash(password)
+                PasswordHash = _hasher.Hash(password),
+                RoleId = userRole.Id
             };
 
             _db.Users.Add(user);
@@ -50,7 +56,7 @@ namespace CustomPadWeb.AuthService.Services
                                       .FirstOrDefaultAsync(x => x.Email == email);
 
             if (user == null || !_hasher.Verify(user.PasswordHash, password))
-                throw new Exception("Invalid credentials.");
+                throw new InvalidCredentialException("Invalid credentials.");
 
             var access = _jwt.GenerateAccessToken(user);
             var refresh = _jwt.GenerateRefreshToken();
@@ -73,7 +79,7 @@ namespace CustomPadWeb.AuthService.Services
                 .FirstOrDefaultAsync(t => t.Token == refreshToken);
 
             if (token == null || token.IsRevoked || token.ExpiresAt < DateTime.UtcNow)
-                throw new Exception("Invalid refresh token.");
+                throw new InvalidTokenException("Invalid refresh token.");
 
             token.IsRevoked = true;
 

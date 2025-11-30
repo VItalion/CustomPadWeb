@@ -6,9 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using CustomPadWeb.AuthService.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("AuthDb")));
+    options.UseNpgsql(builder.Configuration["Postgres:AuthDb"]));
 
 // Add RabbitMQ Connection
 builder.Services.AddSingleton<IConnection>(sp =>

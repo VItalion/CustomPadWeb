@@ -1,4 +1,7 @@
-﻿using CustomPadWeb.AuthService.Services;
+﻿using CustomPadWeb.AuthService.Exceptions;
+using CustomPadWeb.AuthService.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 
 namespace CustomPadWeb.AuthService.Endpoints
 {
@@ -8,20 +11,41 @@ namespace CustomPadWeb.AuthService.Endpoints
         {
             app.MapPost("/auth/register", async (RegisterRequest req, IAuthService auth) =>
             {
-                await auth.RegisterAsync(req.Email, req.Password);
-                return Results.Ok();
+                try
+                {
+                    await auth.RegisterAsync(req.Email, req.Password);
+                    return Results.Ok();
+                }
+                catch (AlredyExistsException ex)
+                {
+                    return Results.Conflict(ex.Message);
+                }
             });
 
-            app.MapPost("/auth/login", async (LoginRequest req, IAuthService auth) =>
+            app.MapPost("/auth/login", async ([FromBody] LoginRequest req, IAuthService auth) =>
             {
-                var result = await auth.LoginAsync(req.Email, req.Password);
-                return Results.Ok(result);
+                try
+                {
+                    var result = await auth.LoginAsync(req.Email, req.Password);
+                    return Results.Ok(result);
+                }
+                catch (InvalidCredentialException ex)
+                {
+                    return Results.NotFound(ex.Message);
+                }
             });
 
             app.MapPost("/auth/refresh", async (RefreshRequest req, IAuthService auth) =>
             {
-                var result = await auth.RefreshAsync(req.RefreshToken);
-                return Results.Ok(result);
+                try
+                {
+                    var result = await auth.RefreshAsync(req.RefreshToken);
+                    return Results.Ok(result);
+                }
+                catch (InvalidTokenException ex)
+                {
+                    return Results.NotFound(ex.Message);
+                }
             });
         }
 

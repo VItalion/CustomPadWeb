@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using CustomPadWeb.Web.Components.Layout
+@using Microsoft.AspNetCore.Components.Authorization
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,6 +9,7 @@
     <base href="/" />
     <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
     <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["positioning.css"]" />
     <link rel="stylesheet" href="@Assets["CustomPadWeb.Web.styles.css"]" />
     <ImportMap />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -16,6 +19,24 @@
 <body>
     <Routes />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    @* <CascadingAuthenticationState>
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <NotAuthorized>
+                        <p>You are not authorized. Please <a href="/login">login</a>.</p>
+                    </NotAuthorized>
+                    <Authorizing>
+                        <p>Please, <NavLink href="login">Login</NavLink> or <NavLink href="register">Register</NavLink> account.</p>
+                    </Authorizing>
+                </AuthorizeRouteView>
+            </Found>
+            <NotFound>
+                <p>Sorry, there's nothing here.</p>
+            </NotFound>
+        </Router>
+    </CascadingAuthenticationState> *@
 </body>
 
 </html>

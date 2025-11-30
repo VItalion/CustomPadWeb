@@ -1,0 +1,51 @@
+﻿@page "/register"
+@using CustomPadWeb.Web.Clients
+@using CustomPadWeb.Web.Models
+@using Microsoft.AspNetCore.Components.Forms
+@inject Web.Clients.AuthApiClient AuthApi
+@inject NavigationManager NavManager
+
+<EditForm Model="regModel" OnValidSubmit="DoRegister">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText @bind-Value="regModel.Email" placeholder="Email" />
+    <InputText @bind-Value="regModel.Password" type="password" placeholder="Password" />
+    <InputText @bind-Value="regModel.ConfirmPassword" type="password" placeholder="Confirm password" />
+    <button disabled="@isBusy">Register</button>
+</EditForm>
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p class="text-danger">@errorMessage</p>
+}
+
+@code {
+    RegisterModel regModel = new();
+    string? errorMessage;
+    bool isBusy;
+
+    private async Task DoRegister()
+    {
+        isBusy = true;
+        errorMessage = null;
+        if (regModel.Password != regModel.ConfirmPassword)
+        {
+            errorMessage = "Passwords do not match";
+        }
+        else
+        {
+            try
+            {
+                var request = new RegisterRequest(regModel.Email, regModel.Password);
+                await AuthApi.RegisterAsync(request);
+                NavManager.NavigateTo("/login");
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+            }
+        }
+        isBusy = false;
+    }
+
+    
+}

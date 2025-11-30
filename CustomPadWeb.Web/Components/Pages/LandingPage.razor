@@ -1,0 +1,122 @@
+﻿@page "/"
+@using CustomPadWeb.Web.Components.Layout
+
+@inject IJSRuntime jsRuntime
+
+@layout MainLayout
+
+<script src="scripts/slideshow.js/"></script>
+
+<div class="root-container items-center">
+    <div class="flex flex-col items-center text-center text-white container-2-column max-width-1024px">
+
+        <div>
+            <!-- Hero Section -->
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                Create Your Perfect Custom Gamepad
+            </h1>
+
+            <p class="max-w-2xl text-lg md:text-xl text-slate-300 mb-10">
+                Build the controller that matches your style and boosts your gameplay.
+                Choose colors, materials, buttons, sticks, and more — all in an intuitive configurator.
+            </p>
+
+            <a href="/configurator"
+               class="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-2xl text-xl font-semibold transition-all shadow-lg shadow-blue-600/40">
+                Start Configuring
+            </a>
+        </div>
+
+        <div>
+            <img src="images/hero_gamepad.png" alt="Custom Gamepad" class="w-full" />
+        </div>
+
+    </div>
+
+    <!-- Features -->
+    <div class="gap-12 text-center bg-white text-slate-900 container-3-column max-width-1024px">
+
+        <div class="p-8 border rounded-2xl shadow-sm hover:shadow-md transition-all">
+            <img src="images/icons/color.svg" class="w-16 mx-auto mb-6 icon" />
+            <h3 class="text-2xl font-semibold mb-4">Endless Customization</h3>
+            <p class="text-slate-600">
+                Sticks, buttons, panels, materials, LEDs, textures — everything is customizable.
+            </p>
+        </div>
+
+        <div class="p-8 border rounded-2xl shadow-sm hover:shadow-md transition-all">
+            <img src="images/icons/performance.svg" class="w-16 mx-auto mb-6 icon" />
+            <h3 class="text-2xl font-semibold mb-4">Pro-Level Performance</h3>
+            <p class="text-slate-600">
+                High-quality components designed for competitive gaming and long durability.
+            </p>
+        </div>
+
+        <div class="p-8 border rounded-2xl shadow-sm hover:shadow-md transition-all">
+            <img src="images/icons/delivery.svg" class="w-16 mx-auto mb-6 icon" />
+            <h3 class="text-2xl font-semibold mb-4">Fast Worldwide Shipping</h3>
+            <p class="text-slate-600">
+                Once your design is approved, we assemble and ship your custom gamepad quickly.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Showcase Section -->
+    <div class="text-center max-width-1024px">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8">Popular Designs</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 slideshow-container">
+            <div class="slide">
+                <img src="images/mockups/galaxy_mockup.png" class="" />
+                <div class="p-4">
+                    <h4 class="font-semibold text-xl">Galaxy Edition</h4>
+                </div>
+            </div>
+
+            <div class="slide">
+                <img src="images/mockups/neon_mockup.png" class="" />
+                <div class="p-4">
+                    <h4 class="font-semibold text-xl">Cyber Neon</h4>
+                </div>
+            </div>
+
+            <div class="slide">
+                <img src="images/mockups/steals_mockup.png" class="" />
+                <div class="p-4">
+                    <h4 class="font-semibold text-xl">Stealth Matte</h4>
+                </div>
+            </div>
+
+            <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+            <button class="next" onclick="plusSlides(1)">&#10095;</button>
+
+            <!-- The dots/circles -->
+            <div style="text-align:center">
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call-to-Action -->
+    <div class="text-center text-white max-width-1024px">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Craft Your Dream Gamepad?</h2>
+        <p class="text-xl text-slate-300 mb-10">
+            Join thousands of gamers already playing with fully customized controllers.
+        </p>
+
+        <a href="/configurator"
+           class="px-10 py-4 bg-blue-600 hover:bg-blue-700 rounded-2xl text-xl font-semibold transition-all shadow-lg shadow-blue-600/30">
+            Launch Configurator
+        </a>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        showSlides(1);
+    });
+</script>

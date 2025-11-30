@@ -1,0 +1,46 @@
+﻿@page "/login"
+@rendermode InteractiveWebAssembly
+@using CustomPadWeb.Web.Clients
+@using CustomPadWeb.Web.Models
+@using Microsoft.AspNetCore.Components.Forms
+@inject Web.Clients.AuthApiClient AuthApi
+@inject Web.Providers.JwtAuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+
+<EditForm Model="LoginModel" OnValidSubmit="DoLogin" FormName="LoginForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText @bind-Value="LoginModel.Email" placeholder="Email" />
+    <InputText @bind-Value="LoginModel.Password" type="password" placeholder="Password" />
+    <button type="submit" disabled="@isBusy">Login</button>
+</EditForm>
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p class="text-danger">@errorMessage</p>
+}
+
+@code {
+    [SupplyParameterFromForm(FormName = "LoginForm")]
+    LoginModel LoginModel { get; set; } = new();
+    string? errorMessage;
+    bool isBusy;
+
+    private async Task DoLogin()
+    {
+        isBusy = true;
+        errorMessage = null;
+
+        try
+        {
+            var result = await AuthApi.LoginAsync(new LoginRequest(LoginModel.Email, LoginModel.Password));
+            await AuthStateProvider.SignInAsync(result.AccessToken, result.RefreshToken);
+            NavManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+        isBusy = false;
+    }
+}

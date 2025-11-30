@@ -1,5 +1,8 @@
-using CustomPadWeb.Web;
+using Blazored.LocalStorage;
+using CustomPadWeb.Web.Clients;
 using CustomPadWeb.Web.Components;
+using CustomPadWeb.Web.Providers;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,16 +11,30 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationCore();
+
+builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddOutputCache();
 
-builder.Services.AddHttpClient<WeatherApiClient>(client =>
+builder.Services.AddHttpClient<OrderApiClient>(client =>
     {
         // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
-        client.BaseAddress = new("https+http://apiservice");
+        client.BaseAddress = new(builder.Configuration["BaseAddress"]);
     });
+
+builder.Services.AddHttpClient<AuthApiClient>(client =>
+{
+    // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+    // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+    client.BaseAddress = new(builder.Configuration["AuthAddress"]);
+});
+
+builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
+builder.Services.AddScoped<JwtAuthenticationStateProvider>();
 
 var app = builder.Build();
 
@@ -37,7 +54,8 @@ app.UseOutputCache();
 app.MapStaticAssets();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AllowAnonymous()
+    .AddInteractiveWebAssemblyRenderMode();
 
 app.MapDefaultEndpoints();
 

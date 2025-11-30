@@ -10,5 +10,6 @@ namespace CustomPadWeb.AuthService.Data
 
         public DbSet<User> Users => Set<User>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<Role> Roles => Set<Role>();
     }
 }
