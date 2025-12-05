@@ -16,16 +16,24 @@
 }
 
 .icon {
-    max-width: 150px;
-    max-height: 150px;
+    max-width: 80px;
+    max-height: 80px;
 }
 
-.max-width-800px {
+.max-width-70percent {
     max-width: 70%;
 }
 
 .max-width-1024px {
     max-width: 1024px;
+}
+
+.max-width-200px {
+    max-width: 200px;
+}
+
+.mockup{
+    width: 100%;
 }
 
 .image-contain {
@@ -37,3 +45,8 @@
         height: 100%;
         object-fit: contain;
     }
+
+.header-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
