@@ -16,7 +16,7 @@ builder.Services.AddSingleton<IConnection>(sp =>
     {
         HostName = builder.Configuration["RabbitMQ:Host"] ?? "localhost",
         Port = int.TryParse(builder.Configuration["RabbitMQ:Port"], out var portVal) ? portVal : 5672,
-        UserName = builder.Configuration["RabbitMQ:User"] ?? "guest",
+        UserName = builder.Configuration["RabbitMQ:Username"] ?? "guest",
         Password = builder.Configuration["RabbitMQ:Password"] ?? "guest",
     };
 
