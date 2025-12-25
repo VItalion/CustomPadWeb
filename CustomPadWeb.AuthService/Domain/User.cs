@@ -8,8 +8,8 @@
         public string PasswordHash { get; set; } = default!;
 
         public Guid RoleId { get; set; }
-        public Role Role { get; set; } = default!;
+        public virtual Role Role { get; set; } = default!;
 
-        public List<RefreshToken> RefreshTokens { get; set; } = new();
+        public virtual List<RefreshToken> RefreshTokens { get; set; } = new();
     }
 }

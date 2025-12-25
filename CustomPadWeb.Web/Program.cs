@@ -46,10 +46,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAntiforgery();
-
 app.UseOutputCache();
+app.UseBlazorFrameworkFiles();
+app.UseWebAssemblyDebugging();
 
 app.MapStaticAssets();
 

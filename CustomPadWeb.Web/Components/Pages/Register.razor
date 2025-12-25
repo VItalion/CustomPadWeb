@@ -1,25 +1,52 @@
 ﻿@page "/register"
+@rendermode InteractiveWebAssembly
 @using CustomPadWeb.Web.Clients
 @using CustomPadWeb.Web.Models
 @using Microsoft.AspNetCore.Components.Forms
 @inject Web.Clients.AuthApiClient AuthApi
 @inject NavigationManager NavManager
 
-<EditForm Model="regModel" OnValidSubmit="DoRegister">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <InputText @bind-Value="regModel.Email" placeholder="Email" />
-    <InputText @bind-Value="regModel.Password" type="password" placeholder="Password" />
-    <InputText @bind-Value="regModel.ConfirmPassword" type="password" placeholder="Confirm password" />
-    <button disabled="@isBusy">Register</button>
-</EditForm>
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-    <p class="text-danger">@errorMessage</p>
-}
+<div class="login-page">
+    <div class="login-card">
+        <h2>Registration</h2>
+
+        <EditForm Model="RegModel" OnValidSubmit="DoRegister" FormName="RegistrationForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label>Registration</label>
+                <InputText @bind-Value="RegModel.Email" class="form-input" placeholder="Email" />
+            </div>
+
+            <div class="form-group password-group">
+                <label>Password</label>
+
+                <InputText type="password" @bind-Value="RegModel.Password" class="form-input" placeholder="Password" />
+            </div>
+
+            <div class="form-group password-group">
+                <label>Confirm Password</label>
+
+                <InputText type="password" @bind-Value="RegModel.ConfirmPassword" class="form-input" placeholder="Confirm password" />
+            </div>
+
+
+            <button type="submit" class="login-btn" disabled="@isBusy">
+                @(isBusy ? "Registering in..." : "Register")
+            </button>
+        </EditForm>
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <p class="text-danger">@errorMessage</p>
+        }
+    </div>
+</div>
+
 
 @code {
-    RegisterModel regModel = new();
+    [SupplyParameterFromForm(FormName = "RegistrationForm")]
+    RegisterModel RegModel { get; set; } = new();
     string? errorMessage;
     bool isBusy;
 
@@ -27,7 +54,7 @@
     {
         isBusy = true;
         errorMessage = null;
-        if (regModel.Password != regModel.ConfirmPassword)
+        if (RegModel.Password != RegModel.ConfirmPassword)
         {
             errorMessage = "Passwords do not match";
         }
@@ -35,7 +62,7 @@
         {
             try
             {
-                var request = new RegisterRequest(regModel.Email, regModel.Password);
+                var request = new RegisterRequest(RegModel.Email, RegModel.Password);
                 await AuthApi.RegisterAsync(request);
                 NavManager.NavigateTo("/login");
             }
@@ -47,5 +74,4 @@
         isBusy = false;
     }
 
-    
 }

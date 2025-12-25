@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CustomPadWeb.AuthService.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20251206002704_AuthDbInitMigration")]
-    partial class AuthDbInitMigration
+    [Migration("20251221130041_InitMigration")]
+    partial class InitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,12 +64,23 @@ namespace CustomPadWeb.AuthService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("96eb6646-6538-4b0a-b855-e34a4ee9fe3c"),
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = new Guid("943ad13e-4aa5-46a5-82e4-c3c15f122f53"),
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("CustomPadWeb.AuthService.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Email")
@@ -84,6 +95,9 @@ namespace CustomPadWeb.AuthService.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("RoleId");
 
@@ -105,11 +119,22 @@ namespace CustomPadWeb.AuthService.Migrations
                 {
                     b.HasOne("CustomPadWeb.AuthService.Domain.Role", "Role")
                         .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CustomPadWeb.AuthService.Domain.Role", null)
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("CustomPadWeb.AuthService.Domain.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("CustomPadWeb.AuthService.Domain.User", b =>

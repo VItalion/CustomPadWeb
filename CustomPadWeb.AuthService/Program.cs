@@ -10,7 +10,7 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseNpgsql(builder.Configuration["Postgres:AuthDb"]));
 
 // Add RabbitMQ Connection
-builder.Services.AddSingleton<IConnection>(sp =>
+builder.Services.AddSingleton<IConnectionFactory>(sp =>
 {
     var factory = new ConnectionFactory
     {
@@ -20,7 +20,7 @@ builder.Services.AddSingleton<IConnection>(sp =>
         Password = builder.Configuration["RabbitMQ:Password"] ?? "guest",
     };
 
-    return factory.CreateConnectionAsync().Result;
+    return factory;
 });
 
 builder.Services.AddSingleton<IEventBus, RabbitMqEventBus>();

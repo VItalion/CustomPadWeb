@@ -9,8 +9,6 @@ namespace CustomPadWeb.AuthService.Services
 {
     public class AuthService : IAuthService
     {
-        private const string UserRoleName = "User";
-
         private readonly AuthDbContext _db;
         private readonly IPasswordHasher _hasher;
         private readonly IJwtService _jwt;
@@ -33,13 +31,13 @@ namespace CustomPadWeb.AuthService.Services
             if (await _db.Users.AnyAsync(x => x.Email == email))
                 throw new AlredyExistsException("User already exists.");
 
-            var userRole = await _db.Roles.FirstAsync(r => r.Name == UserRoleName).ConfigureAwait(false);
+            var userRole = await _db.Roles.FirstAsync(r => r.Name == Constants.UserRoleName).ConfigureAwait(false);
             var user = new User
             {
                 Email = email,
                 PasswordHash = _hasher.Hash(password),
-                RoleId = userRole.Id
             };
+            user.AddToRole(userRole);
 
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
@@ -61,11 +59,13 @@ namespace CustomPadWeb.AuthService.Services
             var access = _jwt.GenerateAccessToken(user);
             var refresh = _jwt.GenerateRefreshToken();
 
-            user.RefreshTokens.Add(new RefreshToken
+            var refreshToken = new RefreshToken
             {
                 Token = refresh,
                 ExpiresAt = DateTime.UtcNow.AddDays(7)
-            });
+            };
+            user.AddRefreshToken(refreshToken);
+            _db.RefreshTokens.Add(refreshToken);
 
             await _db.SaveChangesAsync();
 
