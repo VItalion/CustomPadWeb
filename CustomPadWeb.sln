@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11205.157
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.AppHost", "CustomPadWeb.AppHost\CustomPadWeb.AppHost.csproj", "{AD929078-521F-4999-8531-C8CBA294BFB9}"
 EndProject
@@ -21,6 +21,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.Application", "CustomPadWeb.Application\CustomPadWeb.Application.csproj", "{121E6EE2-0CE1-4DF7-AF5F-92D036DC438A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.AuthService", "CustomPadWeb.AuthService\CustomPadWeb.AuthService.csproj", "{50FE31E5-9A15-D74B-8B37-5E3A2C266BC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPolygon", "TestPolygon\TestPolygon\TestPolygon.csproj", "{07590088-4355-DD86-17AF-283D0F7F1C40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPolygon.Client", "TestPolygon\TestPolygon.Client\TestPolygon.Client.csproj", "{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.Frontend", "CustomPadWeb.Frontend\CustomPadWeb.Frontend\CustomPadWeb.Frontend.csproj", "{075CACA5-6D4F-2C5A-C938-C287BEE90258}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.Frontend.Client", "CustomPadWeb.Frontend\CustomPadWeb.Frontend.Client\CustomPadWeb.Frontend.Client.csproj", "{7E05713C-41D8-44B5-1842-DE3D300B77DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +76,22 @@ Global
 		{50FE31E5-9A15-D74B-8B37-5E3A2C266BC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50FE31E5-9A15-D74B-8B37-5E3A2C266BC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50FE31E5-9A15-D74B-8B37-5E3A2C266BC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07590088-4355-DD86-17AF-283D0F7F1C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07590088-4355-DD86-17AF-283D0F7F1C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07590088-4355-DD86-17AF-283D0F7F1C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07590088-4355-DD86-17AF-283D0F7F1C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{075CACA5-6D4F-2C5A-C938-C287BEE90258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075CACA5-6D4F-2C5A-C938-C287BEE90258}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075CACA5-6D4F-2C5A-C938-C287BEE90258}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075CACA5-6D4F-2C5A-C938-C287BEE90258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E05713C-41D8-44B5-1842-DE3D300B77DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E05713C-41D8-44B5-1842-DE3D300B77DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E05713C-41D8-44B5-1842-DE3D300B77DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E05713C-41D8-44B5-1842-DE3D300B77DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

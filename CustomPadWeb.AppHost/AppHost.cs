@@ -11,4 +11,16 @@ builder.AddProject<Projects.CustomPadWeb_Web>("webfrontend")
 
 builder.AddProject<Projects.CustomPadWeb_AuthService>("custompadweb-authservice");
 
+//builder.AddProject<Projects.TestPolygon>("testpolygon")
+//    .WithExternalHttpEndpoints()
+//    .WithHttpHealthCheck("/health")
+//    .WithReference(apiService)
+//    .WaitFor(apiService);
+
+builder.AddProject<Projects.CustomPadWeb_Frontend>("custompadweb-frontend")
+    .WithExternalHttpEndpoints()
+    .WithHttpHealthCheck("/health")
+    .WithReference(apiService)
+    .WaitFor(apiService);
+
 builder.Build().Run();
