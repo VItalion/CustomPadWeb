@@ -3,19 +3,32 @@
 
 <div class="page">
     <main>
-        <div class="top-row px-4">
-            <CascadingAuthenticationState>
-                <AuthorizeView>
-                    <Authorized>
-                        <span class="me-2">Hello, @context.User.Identity?.Name!</span>
-                        <button class="btn btn-link">Logout</button>
-                    </Authorized>
-                    <NotAuthorized>
-                        <NavLink href="login">Login</NavLink>
-                    </NotAuthorized>
-                </AuthorizeView>
-            </CascadingAuthenticationState>
-            
+        <div class="d-flex justify-content-between">
+            <div class="top-row px-4 fload-start">
+                <NavLink class="nav-link" href="">
+                    <div>
+                        CuspomPad
+                        <img src="images/hero_gamepad.png"
+                             alt="Custom Gamepad"
+                             class="w-full max-w-md rounded-2xl shadow-xl max-width-50px" />
+                    </div>
+                </NavLink>
+            </div>
+
+            <div class="top-row px-4 float-end">
+                <CascadingAuthenticationState>
+                    <AuthorizeView>
+                        <Authorized>
+                            <span class="me-2">Hello, @context.User.Identity?.Name!</span>
+                            <button class="btn btn-link">Logout</button>
+                        </Authorized>
+                        <NotAuthorized>
+                            <NavLink href="login">Login</NavLink>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </CascadingAuthenticationState>
+
+            </div>
         </div>
 
         <article class="content px-4">
