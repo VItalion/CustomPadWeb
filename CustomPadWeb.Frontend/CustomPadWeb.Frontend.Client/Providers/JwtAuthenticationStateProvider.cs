@@ -1,12 +1,13 @@
 ﻿using Blazored.LocalStorage;
 using CustomPadWeb.Frontend.Client.Clients;
+using CustomPadWeb.Frontend.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace CustomPadWeb.Frontend.Client.Providers
 {
-    public class JwtAuthenticationStateProvider : AuthenticationStateProvider
+    public class JwtAuthenticationStateProvider : AuthenticationStateProvider, IAuthService
     {
         private const string AccessTokenKey = "accessToken";
         private const string RefreshTokenKey = "refreshToken";

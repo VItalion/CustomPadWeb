@@ -1,14 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.1.11312.151 d18.0
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.AppHost", "CustomPadWeb.AppHost\CustomPadWeb.AppHost.csproj", "{AD929078-521F-4999-8531-C8CBA294BFB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.ServiceDefaults", "CustomPadWeb.ServiceDefaults\CustomPadWeb.ServiceDefaults.csproj", "{B04C7737-EB32-C7D7-8A9E-CEBC46BE73A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.ApiService", "CustomPadWeb.ApiService\CustomPadWeb.ApiService.csproj", "{C474964A-1271-DE31-61BC-8150DB40A7FF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.Web", "CustomPadWeb.Web\CustomPadWeb.Web.csproj", "{90B57852-6495-3153-DA2D-1B9FBC150F12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.Tests", "CustomPadWeb.Tests\CustomPadWeb.Tests.csproj", "{C46C9795-2F11-0820-05DA-8787B40319B6}"
 EndProject
@@ -21,10 +19,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.Application", "CustomPadWeb.Application\CustomPadWeb.Application.csproj", "{121E6EE2-0CE1-4DF7-AF5F-92D036DC438A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.AuthService", "CustomPadWeb.AuthService\CustomPadWeb.AuthService.csproj", "{50FE31E5-9A15-D74B-8B37-5E3A2C266BC6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPolygon", "TestPolygon\TestPolygon\TestPolygon.csproj", "{07590088-4355-DD86-17AF-283D0F7F1C40}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPolygon.Client", "TestPolygon\TestPolygon.Client\TestPolygon.Client.csproj", "{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPadWeb.Frontend", "CustomPadWeb.Frontend\CustomPadWeb.Frontend\CustomPadWeb.Frontend.csproj", "{075CACA5-6D4F-2C5A-C938-C287BEE90258}"
 EndProject
@@ -48,10 +42,6 @@ Global
 		{C474964A-1271-DE31-61BC-8150DB40A7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C474964A-1271-DE31-61BC-8150DB40A7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C474964A-1271-DE31-61BC-8150DB40A7FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90B57852-6495-3153-DA2D-1B9FBC150F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90B57852-6495-3153-DA2D-1B9FBC150F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90B57852-6495-3153-DA2D-1B9FBC150F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90B57852-6495-3153-DA2D-1B9FBC150F12}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C46C9795-2F11-0820-05DA-8787B40319B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C46C9795-2F11-0820-05DA-8787B40319B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C46C9795-2F11-0820-05DA-8787B40319B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,14 +66,6 @@ Global
 		{50FE31E5-9A15-D74B-8B37-5E3A2C266BC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50FE31E5-9A15-D74B-8B37-5E3A2C266BC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50FE31E5-9A15-D74B-8B37-5E3A2C266BC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07590088-4355-DD86-17AF-283D0F7F1C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07590088-4355-DD86-17AF-283D0F7F1C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07590088-4355-DD86-17AF-283D0F7F1C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07590088-4355-DD86-17AF-283D0F7F1C40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF2D9438-D4F1-EC6A-20A6-12B7D0B1C348}.Release|Any CPU.Build.0 = Release|Any CPU
 		{075CACA5-6D4F-2C5A-C938-C287BEE90258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{075CACA5-6D4F-2C5A-C938-C287BEE90258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{075CACA5-6D4F-2C5A-C938-C287BEE90258}.Release|Any CPU.ActiveCfg = Release|Any CPU

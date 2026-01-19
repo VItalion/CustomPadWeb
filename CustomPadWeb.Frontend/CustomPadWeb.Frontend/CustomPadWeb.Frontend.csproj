@@ -11,11 +11,8 @@
     <ProjectReference Include="..\..\CustomPadWeb.Common\CustomPadWeb.Common.csproj" />
     <ProjectReference Include="..\..\CustomPadWeb.ServiceDefaults\CustomPadWeb.ServiceDefaults.csproj" />
     <ProjectReference Include="..\CustomPadWeb.Frontend.Client\CustomPadWeb.Frontend.Client.csproj" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

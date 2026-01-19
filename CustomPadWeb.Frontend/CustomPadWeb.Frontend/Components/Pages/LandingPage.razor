@@ -1,6 +1,6 @@
 ﻿@page "/"
-@using CustomPadWeb.Frontend.Components.Layout
-
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
 @inject IJSRuntime jsRuntime
 
 @layout MainLayout

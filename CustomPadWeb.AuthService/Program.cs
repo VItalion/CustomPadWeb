@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseNpgsql(builder.Configuration["Postgres:AuthDb"]));
 
+builder.Services.AddCors();
+
 // Add RabbitMQ Connection
 builder.Services.AddSingleton<IConnectionFactory>(sp =>
 {
@@ -29,5 +31,8 @@ builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
 var app = builder.Build();
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 app.MapAuthEndpoints();
+
+
 app.Run();

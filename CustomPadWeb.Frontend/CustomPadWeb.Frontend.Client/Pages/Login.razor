@@ -1,0 +1,100 @@
+﻿@page "/login"
+@rendermode InteractiveWebAssembly
+@using CustomPadWeb.Frontend.Client.Clients
+@using CustomPadWeb.Frontend.Client.Models
+@using Microsoft.AspNetCore.Components.Forms
+@inject Frontend.Client.Clients.AuthApiClient AuthApi
+@inject Services.IAuthService AuthService
+@inject NavigationManager NavManager
+
+<div class="login-page">
+    <div class="login-card">
+
+        <h2>Login</h2>
+        <h4>@RendererInfo.Name</h4>
+        @if (RendererInfo.IsInteractive)
+        {
+            <h5>Interactive Mode</h5>
+        }
+        else
+        {
+            <h5>Prerendered Mode</h5>
+        }
+
+        <EditForm Model="LoginModel" OnValidSubmit="DoLogin" FormName="LoginForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label>Email</label>
+                <InputText @bind-Value="LoginModel.Email" class="form-input" placeholder="Email" />
+            </div>
+
+            <div class="form-group password-group">
+                <label>Password</label>
+
+                <div class="password-container">
+                    <InputText @bind-Value="LoginModel.Password" class="form-input" placeholder="Password" type="password" />
+                </div>
+            </div>
+
+
+            <button type="submit" class="login-btn" disabled="@isBusy">
+                @(isBusy ? "Logging in..." : "Login")
+            </button>
+        </EditForm>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <p style="color:red; text-align:center; margin-top:10px;">
+                @errorMessage
+            </p>
+        }
+
+        <div class="register-link">
+            <p>
+                Don’t have an account?
+                <a href="/register">Register</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [SupplyParameterFromForm(FormName = "LoginForm")]
+    LoginModel LoginModel { get; set; } = new();
+
+    string? errorMessage;
+    bool isBusy;
+    private bool _show = false;
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private async Task DoLogin()
+    {
+        isBusy = true;
+        errorMessage = null;
+
+        try
+        {
+            var result = await AuthApi.LoginAsync(new LoginRequest(LoginModel.Email, LoginModel.Password));
+            await AuthService.SignInAsync(result.AccessToken, result.RefreshToken);
+            NavManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+        isBusy = false;
+    }
+
+    private void Toggle()
+    {
+        _show = !_show;
+    }
+}
