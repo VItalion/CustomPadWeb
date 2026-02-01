@@ -125,9 +125,9 @@
 </script>
 
 @code{
-    protected override Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        jsRuntime.InvokeVoidAsync("showSlides", 1);
-        return base.OnAfterRenderAsync(firstRender);
+        await jsRuntime.InvokeVoidAsync("showSlides", 1);
+        await base.OnAfterRenderAsync(firstRender);
     }
 }

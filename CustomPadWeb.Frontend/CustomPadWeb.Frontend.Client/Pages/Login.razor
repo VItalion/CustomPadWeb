@@ -82,7 +82,9 @@
         try
         {
             var result = await AuthApi.LoginAsync(new LoginRequest(LoginModel.Email, LoginModel.Password));
-            await AuthService.SignInAsync(result.AccessToken, result.RefreshToken);
+            Console.WriteLine($"Access Token: {result.accessToken}");
+            Console.WriteLine($"REfresh Token: {result.refreshToken}");
+            await AuthService.SignInAsync(result.accessToken, result.refreshToken);
             NavManager.NavigateTo("/");
         }
         catch (Exception ex)

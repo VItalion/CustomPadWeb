@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddAuthorizationCore();
-
-Common.ConfigureApiClients(builder.Services, "https://localhost:7433", "https://localhost:7032");
-//Common.ConfigureCommonServices(builder.Services);
+Common.ConfigureApiClients(builder.Services, baseAddress: "https://localhost:7433", authAddress: "https://localhost:7032");
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthService, JwtAuthenticationStateProvider>();

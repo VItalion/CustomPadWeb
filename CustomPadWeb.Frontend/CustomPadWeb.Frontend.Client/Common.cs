@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace CustomPadWeb.Frontend.Client
 {
-    public class Common
+    public static class Common
     {
         public static void ConfigureCommonServices(IServiceCollection services)
         {

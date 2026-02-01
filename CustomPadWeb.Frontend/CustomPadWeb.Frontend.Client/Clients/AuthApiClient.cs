@@ -38,7 +38,7 @@ namespace CustomPadWeb.Frontend.Client.Clients
     }
 
     public record LoginRequest(string Email, string Password);
-    public record LoginResult(string AccessToken, string RefreshToken);
+    public record LoginResult(string accessToken, string refreshToken);
     public record RegisterRequest(string Email, string Password);
     public record RefreshRequest(string RefreshToken);
     public record RefreshResult(string AccessToken, string RefreshToken);

@@ -1,7 +1,3 @@
-using CustomPadWeb.Frontend.Client;
-using CustomPadWeb.Frontend.Client.Clients;
-using CustomPadWeb.Frontend.Client.Providers;
-using CustomPadWeb.Frontend.Client.Services;
 using CustomPadWeb.Frontend.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,9 +10,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddAuthorization();
-
-Common.ConfigureApiClients(builder.Services, builder.Configuration["BaseAddress"]!, builder.Configuration["AuthAddress"]!);
-Common.ConfigureCommonServices(builder.Services);
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
