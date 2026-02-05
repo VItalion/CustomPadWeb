@@ -12,5 +12,6 @@ Common.ConfigureApiClients(builder.Services, baseAddress: "https://localhost:743
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthService, JwtAuthenticationStateProvider>();
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 
 await builder.Build().RunAsync();

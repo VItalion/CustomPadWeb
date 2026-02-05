@@ -25,7 +25,7 @@ namespace CustomPadWeb.ApiService.Services
             throw new NotImplementedException();
         }
 
-        public Task<CustomPadViewModel> UpdateAsycn(Guid id, UpdatePadViewModel viewModel)
+        public Task<CustomPadViewModel> UpdateAsync(Guid id, UpdatePadViewModel viewModel)
         {
             throw new NotImplementedException();
         }

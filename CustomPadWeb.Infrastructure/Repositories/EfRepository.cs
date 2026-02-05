@@ -18,11 +18,11 @@ namespace CustomPadWeb.Infrastructure.Repositories
         }
 
 
-        public async Task<IReadOnlyList<T>> ListAsync(Expression<Func<T, bool>>? predicate = null, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<T>> ListAsync(Expression<Func<T, bool>>? predicate = null, int skip = 0, int range = 0, CancellationToken cancellationToken = default)
         {
             IQueryable<T> query = _db.Set<T>();
             if (predicate is not null)
-                query = query.Where(predicate);
+                query = query.Where(predicate).Skip(skip).Take(range);
 
 
             return await query.ToListAsync(cancellationToken);

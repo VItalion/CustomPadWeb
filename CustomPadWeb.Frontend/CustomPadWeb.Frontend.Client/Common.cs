@@ -13,6 +13,8 @@ namespace CustomPadWeb.Frontend.Client
             services.AddBlazoredLocalStorage();
             services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
             services.AddScoped<IAuthService, JwtAuthenticationStateProvider>();
+            // Configuration service for gamepad editor
+            services.AddScoped<Services.IConfigurationService, Services.ConfigurationService>();
         }
 
         public static void ConfigureApiClients(IServiceCollection services, string baseAddress, string authAddress)
@@ -29,6 +31,11 @@ namespace CustomPadWeb.Frontend.Client
                 // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
                 // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
                 client.BaseAddress = new(authAddress);
+            });
+
+            services.AddHttpClient<Clients.ConfigurationApiClient>(client =>
+            {
+                client.BaseAddress = new(baseAddress);
             });
         }
     }

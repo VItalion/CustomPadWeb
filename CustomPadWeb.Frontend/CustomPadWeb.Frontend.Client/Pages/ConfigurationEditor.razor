@@ -1,0 +1,295 @@
+@page "/configuration-editor"
+@page "/configuration-editor/{id:guid}"
+@using CustomPadWeb.Common.Enums.PadOptions
+@using CustomPadWeb.Common.ViewModels
+@using CustomPadWeb.Frontend.Client.Components
+@inject Services.IConfigurationService ConfigurationService
+@inject NavigationManager Navigation
+
+<div class="d-flex justify-content-center">
+    <div style="max-width:900px;width:100%;">
+        <h1 class="text-center">Gamepad Configuration Editor</h1>
+
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" @bind="VmName" />
+            <label class="form-label mt-2">Description</label>
+            <textarea class="form-control" @bind="VmDescription"></textarea>
+        </div>
+
+        <div class="mb-3 d-flex justify-content-center">
+            <div class="btn-group" role="group" aria-label="Segments">
+                @foreach (var seg in Segments)
+                {
+                    <button class="btn @(seg == SelectedSegment ? "btn-primary" : "btn-outline-primary")" @onclick="() => SelectSegment(seg)">@seg</button>
+                }
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            @foreach (var option in CurrentOptions)
+            {
+                var isSelected = option.Value == GetSelectedValueForSegment(SelectedSegment);
+
+                <OptionCard Name="@option.Name"
+                            Description="@option.Description"
+                            ImageUrl="@option.ImageUrl"
+                            IsSelected="isSelected"
+                            OnSelected="() => SelectOption(option)" />
+            }
+        </div>
+
+        <div class="mt-4 text-center">
+            <button class="btn btn-success me-2" @onclick="Save">Save</button>
+            <button class="btn btn-outline-secondary me-2" @onclick="Cancel">Cancel</button>
+            <button class="btn btn-secondary me-2" @onclick="Reset">Reset</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    record OptionItem(string Name, string Description, string ImageUrl, string Value);
+
+    [Parameter]
+    public CustomPadViewModel? ExistingVm { get; set; }
+
+    [Parameter]
+    public Guid? id { get; set; }
+
+    private string VmName { get; set; } = string.Empty;
+    private string VmDescription { get; set; } = string.Empty;
+
+    private string[] Segments = new[] { "ABXY", "Additional", "DPad", "Sticks", "Triggers", "Connection", "Input", "Power" };
+    private string SelectedSegment = "ABXY";
+
+    private List<OptionItem> CurrentOptions = new();
+
+    private OptionItem? PopoverOption;
+    private bool IsPopoverVisible;
+
+    // Selected values mapped to enums
+    private ButtonType SelectedABXY = ButtonType.None;
+    private ButtonType SelectedAdditional = ButtonType.None;
+    private DPadType SelectedDPad = DPadType.None;
+    private StickType SelectedSticks = StickType.None;
+    private TriggerType SelectedTriggers = TriggerType.None;
+    private ConnectionType SelectedConnection = ConnectionType.Cable;
+    private InputType SelectedInput = InputType.None;
+    private PowerOption SelectedPower = PowerOption.None;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (id.HasValue)
+        {
+            ExistingVm = await ConfigurationService.GetByIdAsync(id.Value);
+        }
+
+        if (ExistingVm != null)
+        {
+            FillFromExistingVm();
+        }
+        else
+        {
+            FillFromDefaults();
+        }
+
+        LoadOptionsForSegment(SelectedSegment);
+    }
+
+    private void SelectSegment(string seg)
+    {
+        SelectedSegment = seg;
+        LoadOptionsForSegment(seg);
+    }
+
+    private void LoadOptionsForSegment(string seg)
+    {
+        CurrentOptions.Clear();
+        switch (seg)
+        {
+            case "ABXY":
+            // CurrentOptions.Add(new OptionItem("None", "No ABXY buttons", "images/icons/editor/empty.png", nameof(ButtonType.None)));
+            CurrentOptions.Add(new OptionItem("MembraneSwitch", "Membrane switches for ABXY", "images/icons/editor/membrane.png", nameof(ButtonType.MembraneSwitch)));
+            CurrentOptions.Add(new OptionItem("MicroSwitch", "Micro switches for ABXY", "images/icons/editor/microswich.jpg", nameof(ButtonType.MicroSwitch)));
+            break;
+
+            case "Additional":
+            CurrentOptions.Add(new OptionItem("None", "No additional buttons", "images/icons/editor/empty.png", nameof(ButtonType.None)));
+            CurrentOptions.Add(new OptionItem("MembraneSwitch", "Membrane switches for additional buttons", "images/icons/editor/membrane.png", nameof(ButtonType.MembraneSwitch)));
+            CurrentOptions.Add(new OptionItem("MicroSwitch", "Micro switches for additional buttons", "images/icons/editor/microswich.jpg", nameof(ButtonType.MicroSwitch)));
+            break;
+
+            case "DPad":
+            // CurrentOptions.Add(new OptionItem("None", "No D-Pad", "images/icons/editor/empty.png", nameof(DPadType.None)));
+            CurrentOptions.Add(new OptionItem("MembraneSwitches", "Membrane switches for D-pad", "images/icons/editor/dpad_membrane.png", nameof(DPadType.MembraneSwitches)));
+            CurrentOptions.Add(new OptionItem("MicroSwitches", "Micro switches for D-pad", "images/icons/editor/dpad_separate.png", nameof(DPadType.MicroSwitches)));
+            CurrentOptions.Add(new OptionItem("DigitalStick", "Digital stick for D-pad", "images/icons/editor/dpad_circle", nameof(DPadType.DigitalStick)));
+            break;
+
+            case "Sticks":
+            CurrentOptions.Add(new OptionItem("None", "No sticks", "images/icons/editor/empty.png", nameof(StickType.None)));
+            // CurrentOptions.Add(new OptionItem("Any", "Any joystick", string.Empty, nameof(StickType.Any)));
+            CurrentOptions.Add(new OptionItem("Analog", "Analog joystick", "images/icons/editor/stick_analog.jpg", nameof(StickType.Analog)));
+            CurrentOptions.Add(new OptionItem("Hall", "Hall sensor joystick", "images/icons/editor/stick_hall.jpg", nameof(StickType.Hall)));
+            CurrentOptions.Add(new OptionItem("TMR", "TMR joystick", "images/icons/editor/stick_tmr.jpg", nameof(StickType.TMR)));
+            break;
+
+            case "Triggers":
+            // CurrentOptions.Add(new OptionItem("None", "No triggers", "images/icons/editor/empty.png", nameof(TriggerType.None)));
+            CurrentOptions.Add(new OptionItem("Analog", "Analog triggers", "images/icons/editor/trigger_analog.png", nameof(TriggerType.Analog)));
+            CurrentOptions.Add(new OptionItem("Digital", "Digital triggers", "images/icons/editor/trigger_digital.jpg", nameof(TriggerType.Digital)));
+            CurrentOptions.Add(new OptionItem("Hall", "Hall triggers", "images/icons/editor/trigger_hall.jpg", nameof(TriggerType.Hall)));
+            break;
+
+            case "Connection":
+            CurrentOptions.Add(new OptionItem("Cable", "Wired connection", "images/icons/editor/usb.png", nameof(ConnectionType.Cable)));
+            CurrentOptions.Add(new OptionItem("Bluetooth", "Bluetooth connection", "images/icons/editor/bluetooth.png", nameof(ConnectionType.Bluetooth)));
+            CurrentOptions.Add(new OptionItem("Radio", "Radio connection", "images/icons/editor/wireless.png", nameof(ConnectionType.Radio)));
+            break;
+
+            case "Input":
+            CurrentOptions.Add(new OptionItem("XInput", "XInput support", "images/icons/editor/xinput.png", nameof(InputType.XInput)));
+            CurrentOptions.Add(new OptionItem("DirectInput", "DirectInput support", "images/icons/editor/directinput.png", nameof(InputType.DirectInput)));
+            CurrentOptions.Add(new OptionItem("PlayStation4", "PS4 support", "images/icons/editor/ps4.png", nameof(InputType.PlayStation4)));
+            CurrentOptions.Add(new OptionItem("PlayStation5", "PS5 support", "images/icons/editor/ps5.png", nameof(InputType.PlayStation5)));
+            CurrentOptions.Add(new OptionItem("NintendoSwitch", "Switch support", "images/icons/editor/nintendo_swich.png", nameof(InputType.NintendoSwitch)));
+            break;
+
+            case "Power":
+            CurrentOptions.Add(new OptionItem("None", "No power option, avaliable only with cable connection.", "images/icons/editor/empty.png", nameof(PowerOption.None)));
+            CurrentOptions.Add(new OptionItem("BatteryAA", "AA batteries", "images/icons/editor/battery_AA.jpeg", nameof(PowerOption.BatteryAA)));
+            CurrentOptions.Add(new OptionItem("BatteryAAA", "AAA batteries", "images/icons/editor/battery_AAA.jpg", nameof(PowerOption.BatteryAAA)));
+            CurrentOptions.Add(new OptionItem("BatteryPP3", "PP3 batteries", "images/icons/editor/battery_PP3.png", nameof(PowerOption.BatteryPP3)));
+            CurrentOptions.Add(new OptionItem("Battery", "Generic battery", "images/icons/editor/battery.jpg", nameof(PowerOption.Battery)));
+            break;
+        }
+
+        StateHasChanged();
+    }
+
+    private void SelectOption(OptionItem option)
+    {
+        switch (SelectedSegment)
+        {
+            case "ABXY":
+            SelectedABXY = Enum.Parse<ButtonType>(option.Value);
+            break;
+            case "Additional":
+            SelectedAdditional = Enum.Parse<ButtonType>(option.Value);
+            break;
+            case "DPad":
+            SelectedDPad = Enum.Parse<DPadType>(option.Value);
+            break;
+            case "Sticks":
+            SelectedSticks = Enum.Parse<StickType>(option.Value);
+            break;
+            case "Triggers":
+            SelectedTriggers = Enum.Parse<TriggerType>(option.Value);
+            break;
+            case "Connection":
+            SelectedConnection = Enum.Parse<ConnectionType>(option.Value);
+            break;
+            case "Input":
+            SelectedInput = Enum.Parse<InputType>(option.Value);
+            break;
+            case "Power":
+            SelectedPower = Enum.Parse<PowerOption>(option.Value);
+            break;
+        }
+    }
+
+    private string GetSelectedValueForSegment(string seg)
+    {
+        return seg switch
+        {
+            "ABXY" => SelectedABXY.ToString(),
+            "Additional" => SelectedAdditional.ToString(),
+            "DPad" => SelectedDPad.ToString(),
+            "Sticks" => SelectedSticks.ToString(),
+            "Triggers" => SelectedTriggers.ToString(),
+            "Connection" => SelectedConnection.ToString(),
+            "Input" => SelectedInput.ToString(),
+            "Power" => SelectedPower.ToString(),
+            _ => string.Empty,
+        };
+    }
+
+    private void Reset()
+    {
+        if (ExistingVm == null)
+        {
+            FillFromDefaults();
+        }
+        else
+        {
+            FillFromExistingVm();
+        }
+
+        LoadOptionsForSegment(SelectedSegment);
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+    private async Task Save()
+    {
+        var vm = new CustomPadViewModel
+        {
+            Id = ExistingVm?.Id ?? Guid.NewGuid(),
+            Name = VmName ?? "",
+            Description = VmDescription ?? string.Empty,
+            ABXYButtons = SelectedABXY,
+            AdditionalButtons = SelectedAdditional,
+            DPad = SelectedDPad,
+            Sticks = SelectedSticks,
+            Triggers = SelectedTriggers,
+            ConnectionType = SelectedConnection,
+            InputType = SelectedInput,
+            Power = SelectedPower
+        };
+
+        if (ExistingVm != null)
+        {
+            await ConfigurationService.UpdateAsync(ExistingVm.Id, vm);
+        }
+        else
+        {
+            await ConfigurationService.CreateAsync(vm);
+        }
+
+        Navigation.NavigateTo("/");
+    }
+
+    private void FillFromExistingVm()
+    {
+        if (ExistingVm == null) return;
+
+        VmName = ExistingVm.Name;
+        VmDescription = ExistingVm.Description;
+        SelectedABXY = ExistingVm.ABXYButtons;
+        SelectedAdditional = ExistingVm.AdditionalButtons;
+        SelectedDPad = ExistingVm.DPad;
+        SelectedSticks = ExistingVm.Sticks;
+        SelectedTriggers = ExistingVm.Triggers;
+        SelectedConnection = ExistingVm.ConnectionType;
+        SelectedInput = ExistingVm.InputType;
+        SelectedPower = ExistingVm.Power;
+    }
+
+    private void FillFromDefaults()
+    {
+        VmName = string.Empty;
+        VmDescription = string.Empty;
+        SelectedSegment = "ABXY";
+        SelectedABXY = ButtonType.MembraneSwitch;
+        SelectedAdditional = ButtonType.None;
+        SelectedDPad = DPadType.MembraneSwitches;
+        SelectedSticks = StickType.None;
+        SelectedTriggers = TriggerType.Analog;
+        SelectedConnection = ConnectionType.Cable;
+        SelectedInput = InputType.XInput;
+        SelectedPower = PowerOption.None;
+    }
+}

@@ -3,9 +3,6 @@ using CustomPadWeb.Common.ViewModels;
 using CustomPadWeb.Domain.Entities;
 using CustomPadWeb.Domain.Enums.PadOptions;
 using CustomPadWeb.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CustomPadWeb.Application.Services
 {
@@ -18,7 +15,7 @@ namespace CustomPadWeb.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Create(CustomPadViewModelBase vm)
+        public async Task CreateAsync(CustomPadViewModelBase vm)
         {
             var model = new GamepadConfiguration
             {
@@ -37,7 +34,28 @@ namespace CustomPadWeb.Application.Services
             await _unitOfWork.GamepadConfigurations.AddAsync(model).ConfigureAwait(false);
         }
 
-        public async Task Update(Guid id, UpdatePadViewModel vm)
+        public async Task DeleteAsync(Guid id)
+        {
+            var model = await _unitOfWork.GamepadConfigurations.GetByIdAsync(id) ?? throw new KeyNotFoundException("Gamepad configuration not found.");
+            _unitOfWork.GamepadConfigurations.Remove(model);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<CustomPadViewModel>> GetAllAsync(int range = 0, int skip = 0)
+        {
+            var models = await _unitOfWork.GamepadConfigurations.ListAsync(skip: skip, range: range);
+            return models.MapToVms();
+        }
+
+        public async Task<CustomPadViewModel?> GetByIdAsync(Guid id)
+        {
+            var model = await _unitOfWork.GamepadConfigurations.GetByIdAsync(id);
+
+            return model?.MapToVm();
+        }
+
+        public async Task UpdateAsync(Guid id, UpdatePadViewModel vm)
         {
             var model = await _unitOfWork.GamepadConfigurations.GetByIdAsync(id).ConfigureAwait(false);
             if (model == null)

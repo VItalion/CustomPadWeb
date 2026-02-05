@@ -1,0 +1,19 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="btn-group" role="group">
+    @foreach (var seg in Items)
+    {
+        <button class="btn @(seg == Selected ? "btn-primary" : "btn-outline-primary")" @onclick="() => Select.InvokeAsync(seg)">@seg</button>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<string> Items { get; set; } = Enumerable.Empty<string>();
+
+    [Parameter]
+    public string Selected { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> Select { get; set; }
+}

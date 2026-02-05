@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CustomPadWeb.Application\CustomPadWeb.Application.csproj" />
     <ProjectReference Include="..\CustomPadWeb.Common\CustomPadWeb.Common.csproj" />
     <ProjectReference Include="..\CustomPadWeb.Domain\CustomPadWeb.Domain.csproj" />
     <ProjectReference Include="..\CustomPadWeb.Infrastructure\CustomPadWeb.Infrastructure.csproj" />
@@ -20,10 +21,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

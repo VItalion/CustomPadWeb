@@ -12,6 +12,6 @@ namespace CustomPadWeb.ApiService.Services.Interfaces
 
         Task<IEnumerable<CustomPadViewModel>> GetAsync();
 
-        Task<CustomPadViewModel> UpdateAsycn(Guid id, UpdatePadViewModel viewModel);
+        Task<CustomPadViewModel> UpdateAsync(Guid id, UpdatePadViewModel viewModel);
     }
 }
